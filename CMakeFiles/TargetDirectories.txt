@@ -1,0 +1,6 @@
+/media/yara/Volume1/Old_D/ITIEmbedded/Quadroid/STM_Ultrasonic/CMakeFiles/STM_Ultrasonic.dir
+/media/yara/Volume1/Old_D/ITIEmbedded/Quadroid/STM_Ultrasonic/CMakeFiles/edit_cache.dir
+/media/yara/Volume1/Old_D/ITIEmbedded/Quadroid/STM_Ultrasonic/CMakeFiles/rebuild_cache.dir
+/media/yara/Volume1/Old_D/ITIEmbedded/Quadroid/STM_Ultrasonic/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir
+/media/yara/Volume1/Old_D/ITIEmbedded/Quadroid/STM_Ultrasonic/cmake/stm32cubemx/CMakeFiles/edit_cache.dir
+/media/yara/Volume1/Old_D/ITIEmbedded/Quadroid/STM_Ultrasonic/cmake/stm32cubemx/CMakeFiles/rebuild_cache.dir

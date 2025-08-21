@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "ultrasonic_sensor.h": "c",
+        "stm32f4xx_hal.h": "c"
+    }
+}
