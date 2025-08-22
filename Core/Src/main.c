@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-// #include "Ultrasonic_Sensor.h"
+#include "Ultrasonic_Sensor.h"
 
 /* USER CODE END Includes */
 
@@ -50,20 +50,8 @@ UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
 
-/*
-#define TRIG1_PORT GPIOA
-#define TRIG1_PIN  GPIO_PIN_1
-#define ECHO1_PORT GPIOA
-#define ECHO1_PIN  GPIO_PIN_0
-*/
-#define TRIG_PIN GPIO_PIN_1
-#define TRIG_PORT GPIOA
-#define ECHO_PIN GPIO_PIN_0
-#define ECHO_PORT GPIOA
-uint32_t pMillis;
-uint32_t Value1 = 0;
-uint32_t Value2 = 0;
-uint16_t Distance = 0; // cm
+extern const Ultrasonic us[4];
+
 
 /* USER CODE END PV */
 
@@ -122,7 +110,6 @@ int main(void)
   snprintf(distance_msg, sizeof(distance_msg), "Hello\r\n");
   HAL_UART_Transmit(&huart1, (uint8_t *)distance_msg, strlen(distance_msg), HAL_MAX_DELAY);
   HAL_TIM_Base_Start(&htim5);
-  HAL_GPIO_WritePin(TRIG_PORT, TRIG_PIN, GPIO_PIN_RESET);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -130,43 +117,34 @@ int main(void)
   while (1)
   {
 
-    HAL_GPIO_WritePin(TRIG_PORT, TRIG_PIN, GPIO_PIN_SET); // pull the TRIG pin HIGH
-    __HAL_TIM_SET_COUNTER(&htim5, 0);
-    while (__HAL_TIM_GET_COUNTER(&htim5) < 10)
-      ;                                                     // wait for 10 us
-    HAL_GPIO_WritePin(TRIG_PORT, TRIG_PIN, GPIO_PIN_RESET); // pull the TRIG pin low
+    uint16_t d[4] = {0};
 
-    pMillis = HAL_GetTick(); // used this to avoid infinite while loop  (for timeout)
-    // wait for the echo pin to go high
-    while (!(HAL_GPIO_ReadPin(ECHO_PORT, ECHO_PIN)) && pMillis + 10 > HAL_GetTick())
-      ;
-    Value1 = __HAL_TIM_GET_COUNTER(&htim5);
-
-    pMillis = HAL_GetTick(); // used this to avoid infinite while loop (for timeout)
-    // wait for the echo pin to go low
-    while ((HAL_GPIO_ReadPin(ECHO_PORT, ECHO_PIN)) && pMillis + 50 > HAL_GetTick())
-      ;
-    Value2 = __HAL_TIM_GET_COUNTER(&htim5);
-
-    Distance = (Value2 - Value1) * 0.034 / 2;
-    if (Distance > 0 &&Distance<20)
+    for (int i = 0; i < 4; i++)
     {
-
-      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET); // LED ON
-          char distance_msg[64];
-    snprintf(distance_msg, sizeof(distance_msg), "Distance = %lu cm\r\n", Distance);
-    HAL_UART_Transmit(&huart1, (uint8_t *)distance_msg, strlen(distance_msg), HAL_MAX_DELAY);
+      d[i] = US_Measure_cm(&us[i]);
+      HAL_Delay(60); // avoid crosstalk
     }
-    else
+
+    // LED ON if any <20 cm
+    GPIO_PinState led = GPIO_PIN_RESET;
+    for (int i = 0; i < 4; i++)
     {
-      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET); // LED OFF
+      if (d[i] > 0 && d[i] < 20)
+      {
+        led = GPIO_PIN_SET;
+        break;
+      }
     }
-    HAL_Delay(50);
-    /* USER CODE END WHILE */
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, led);
 
-    /* USER CODE BEGIN 3 */
-    // HCSR04_Trigger();
-    // HAL_Delay(50);
+    // Print
+    char msg[80];
+    int n = snprintf(msg, sizeof(msg),
+                     "D1=%u cm D2=%u cm D3=%u cm D4=%u cm\r\n",
+                     d[0], d[1], d[2], d[3]);
+    HAL_UART_Transmit(&huart1, (uint8_t *)msg, n, HAL_MAX_DELAY);
+
+    HAL_Delay(100);
   }
   /* USER CODE END 3 */
 }
