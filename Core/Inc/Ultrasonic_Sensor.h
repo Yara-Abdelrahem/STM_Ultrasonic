@@ -30,11 +30,7 @@
 #define ECHO4_PIN  GPIO_PIN_6
 
 
-extern TIM_HandleTypeDef htim2;
-extern TIM_HandleTypeDef htim3;
-extern TIM_HandleTypeDef htim5;
-extern TIM_HandleTypeDef htim9;
-extern UART_HandleTypeDef huart1;
+
 
 // Declare global variables (extern only)
 extern volatile uint32_t ic_val1, ic_val2;
@@ -47,11 +43,15 @@ typedef struct {
   uint16_t      trig_pin;
   GPIO_TypeDef *echo_port;
   uint16_t      echo_pin;
+  TIM_HandleTypeDef *htim; 
 } Ultrasonic;
 
-
+typedef struct {
+  GPIO_TypeDef *led_port;
+  uint16_t      led_pin;
+} Led;
 extern const Ultrasonic us[4];
 
 // Function prototypes
-uint16_t US_Measure_cm(const Ultrasonic *s);
+uint16_t US_Measure_cm(const Ultrasonic *s, uint8_t index);
 #endif
