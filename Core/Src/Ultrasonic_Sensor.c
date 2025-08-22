@@ -17,11 +17,6 @@ const Ultrasonic us[4] = {
     {TRIG4_PORT, TRIG4_PIN, ECHO4_PORT, ECHO4_PIN, &htim3},
 };
 
-const Led leds[4] = {
-    {GPIOB, GPIO_PIN_0},
-    {GPIOB, GPIO_PIN_1},
-    {GPIOB, GPIO_PIN_2},
-    {GPIOB, GPIO_PIN_3}};
 
 uint16_t US_Measure_cm(const Ultrasonic *s, uint8_t index)
 {
@@ -66,12 +61,6 @@ uint16_t US_Measure_cm(const Ultrasonic *s, uint8_t index)
 
     if (cm > 400)
         cm = 400; // max range ~4m
-
-    // LED ON if closer than 20 cm
-    if (cm > 0 && cm < 20)
-        HAL_GPIO_WritePin(leds[index].led_port, leds[index].led_pin, GPIO_PIN_SET);
-    else
-        HAL_GPIO_WritePin(leds[index].led_port, leds[index].led_pin, GPIO_PIN_RESET);
 
     return (uint16_t)cm;
 }
