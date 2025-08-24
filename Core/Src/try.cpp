@@ -6,7 +6,7 @@
 
 int main()
 {
-    const char *port = "/dev/ttyUSB1"; // adjust to your USB-UART port
+    const char *port = "/dev/ttyUSB0"; // adjust to your USB-UART port
     int fd = open(port, O_RDWR | O_NOCTTY | O_SYNC);
     if (fd < 0)
     {
