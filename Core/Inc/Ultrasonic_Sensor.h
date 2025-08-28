@@ -29,7 +29,12 @@
 #define ECHO4_PORT GPIOA
 #define ECHO4_PIN  GPIO_PIN_6
 
+#define LED_Left_Port GPIOA 
+#define LED_Left_Pin GPIO_PIN_4
 
+
+#define LED_Right_Port GPIOA 
+#define LED_Right_Pin GPIO_PIN_7 
 
 
 // Declare global variables (extern only)
@@ -54,4 +59,12 @@ extern const Ultrasonic us[4];
 
 // Function prototypes
 uint16_t US_Measure_cm(const Ultrasonic *s, uint8_t index);
+
+
+// Led functions 
+void Light_Init(void);
+void Light_Right_On(void);
+void Light_Righgt_Off(void);
+void Light_Left_On(void) ;
+void Light_Left_Off(void) ;
 #endif

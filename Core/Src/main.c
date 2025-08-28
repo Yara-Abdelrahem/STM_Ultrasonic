@@ -130,10 +130,10 @@ int main(void)
     HAL_Delay(60); // allow echoes to clear
     d[1] = US_Measure_cm(&us[1], 1);
     HAL_Delay(60); // allow echoes to clear
-    d[2] = US_Measure_cm(&us[2], 2);
-    HAL_Delay(60); // allow echoes to clear
-    d[3] = US_Measure_cm(&us[3], 3);
-    HAL_Delay(60); // allow echoes to clear
+    // d[2] = US_Measure_cm(&us[2], 2);
+    // HAL_Delay(60); // allow echoes to clear
+    // d[3] = US_Measure_cm(&us[3], 3);
+    // HAL_Delay(60); // allow echoes to clear
 
     HAL_UART_Transmit(&huart1, (uint8_t *)d, sizeof(d), HAL_MAX_DELAY);
 

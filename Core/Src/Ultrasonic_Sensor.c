@@ -62,5 +62,43 @@ uint16_t US_Measure_cm(const Ultrasonic *s, uint8_t index)
     if (cm > 400)
         cm = 400; // max range ~4m
 
+    if(cm > 0 && cm < 20&& index ==0)
+        Light_Left_On();
+    
+    if(cm >21&& index ==0)
+        Light_Left_Off();
+
+    if(cm > 0 && cm < 20&& index ==1)
+        Light_Right_On();
+    
+    if(cm >21 &&index ==1)
+        Light_Right_Off();
+
+
     return (uint16_t)cm;
+}
+
+
+void Light_Init(void) {
+
+    HAL_GPIO_WritePin(LED_Left_Port, LED_Left_Pin, GPIO_PIN_RESET); 
+    HAL_GPIO_WritePin(LED_Right_Port, LED_Right_Pin, GPIO_PIN_RESET); 
+
+}
+
+
+void   Light_Right_On(void) {
+    HAL_GPIO_WritePin(LED_Right_Port, LED_Right_Pin, GPIO_PIN_SET);
+}
+
+void Light_Right_Off(void) {
+    HAL_GPIO_WritePin(LED_Right_Port, LED_Right_Pin, GPIO_PIN_RESET);
+}
+
+void Light_Left_On(void) {
+    HAL_GPIO_WritePin(LED_Left_Port, LED_Left_Pin, GPIO_PIN_SET);
+}
+
+void Light_Left_Off(void) {
+    HAL_GPIO_WritePin(LED_Left_Port, LED_Left_Pin, GPIO_PIN_RESET);
 }
